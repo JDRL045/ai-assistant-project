@@ -1,0 +1,111 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "043b6132-3a26-4a94-ad1a-b32f22ce780e",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        260
+      ],
+      "webhookId": "8678009d-d63e-41e9-b02a-fd4722e66d48",
+      "credentials": {
+        "telegramApi": {
+          "id": "XSz4oOhRHzoWcKUs",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"text-davinci-003\",\n  \"prompt\": \"{{ $json['message'] }}\",\n  \"max_tokens\": 150\n}",
+        "options": {}
+      },
+      "id": "783af166-cba0-4daa-8771-6c23fe9eb576",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        540,
+        260
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xVRdVUVJ9R3sU8c3",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "{{$node[\"Telegram Trigger\"].data[\"chat.id\"]}}",
+        "text": "{{$node[\"HTTP Request\"].data[\"choices\"][0][\"text\"]}}",
+        "additionalFields": {}
+      },
+      "id": "a30850a7-30f8-4999-83d6-5493c0a7e95f",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        760,
+        260
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "XSz4oOhRHzoWcKUs",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2b09da17-dbf4-49a0-955f-119a1872430e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bd93cc00eec2d2afc185bba5cdee59a32bbb6d8a934d0830e2a6602fcd673406"
+  },
+  "id": "wTJyUD92gzHXPa1L",
+  "tags": []
+}
