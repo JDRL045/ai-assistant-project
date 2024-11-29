@@ -8,7 +8,7 @@
         ],
         "additionalFields": {}
       },
-      "id": "043b6132-3a26-4a94-ad1a-b32f22ce780e",
+      "id": "https://6df7-2800-e2-5c80-1350-fcd4-b2ab-a85f-c369.ngrok-free.app",
       "name": "Telegram Trigger",
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
